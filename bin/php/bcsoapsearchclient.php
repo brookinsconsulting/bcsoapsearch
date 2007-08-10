@@ -23,7 +23,7 @@ if ( count( $options['arguments'] ) < 2 )
 }
 
 $wsdlUri =& $options['arguments'][0];
-$name =& $options['arguments'][1];
+$searchStr =& $options['arguments'][1];
 
 ext_class( 'nusoap', 'nusoap' );
 
@@ -36,7 +36,7 @@ if ( $err )
     $script->shutdown( 1, $err );
 }
 
-$result = $client->call( 'search_more', array( 'searchStr' => $name ) );
+$result = $client->call( 'search_ez', array( 'searchStr' => $searchStr ) );
 
 if ( $options['show-request'] )
 {
