@@ -1,0 +1,14 @@
+README
+
+
+Testing the service
+
+./extension/bcsoapsearch/bin/php/bcsoapsearchclient.php http://soap.example.com/bcsoapsearch?wsdl test
+
+
+Testing the search via psudo cronjob (to get access to the eZ ENV)
+
+- symlink, cronjobs/ezsearchtestclient.php to extension/bcsoapsearch/services/bcsoapsearch.ez.php
+
+- run, php runcronjobs.php -s ezwebin_site_user -d ezsearchtestclient| less
+
