@@ -1,14 +1,49 @@
 README
 
+INSTALLATION
+
+- Install eZ Publish
+- Install extension, nusoap
+- Install settings override file, settings/override/nusoap.ini.append.php 
+- Match similar settings in above settings file
+
+[GeneralSettings]
+# available NuSOAP services
+# each service will get his own settings group
+# example: the settings group name for a service called myservice is Service_myservice
+AvailableServices[]
+AvailableServices[]=helloworld
+AvailableServices[]=bcsoapsearch
+# enable or disable NuSOAP server
+EnableSOAP=true
+# enable or disable NuSOAP server logging
+EnableLog=false
+
+- Add vhost configuration for soap.example.com
+- Install nusoap mod rewrite rule
+
+RewriteCond %{HTTP_HOST} ^soap\..*
+RewriteRule ^(.*) /nusoap.php [L]
+
+- Install extension, bcsoapsearch
+- Install settings override file, settings/override/bcsoapsearch.ini.append.php 
+- Match similar settings in above settings file
+
+[BcSoapSearchSettings]
+DocumentUrlPrefix=http://example.com/eng/
+
+- Create symlink of service
+
+ln -s extension/bcsoapsearch/services/bcsoapsearch.php extension/nusoap/nusoap/bcsoapsearch.php
+
+
+TESTING
 
 Testing the service
 
 ./extension/bcsoapsearch/bin/php/bcsoapsearchclient.php http://soap.example.com/bcsoapsearch?wsdl test
 
-
-Testing the search via psudo cronjob (to get access to the eZ ENV)
-
-- symlink, cronjobs/ezsearchtestclient.php to extension/bcsoapsearch/services/bcsoapsearch.ez.php
-
-- run, php runcronjobs.php -s ezwebin_site_user -d ezsearchtestclient| less
+-- Testing the search via psudo cronjob (to get access to the eZ ENV)
+--- symlink, cronjobs/ezsearchtestclient.php to extension/bcsoapsearch/services/bcsoapsearch.ez.php
+--- run, php runcronjobs.php -s ezwebin_site_user -d ezsearchtestclient| less
 
