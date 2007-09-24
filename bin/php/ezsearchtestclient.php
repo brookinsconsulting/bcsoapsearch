@@ -1,6 +1,6 @@
 <?php
 
-include_once( 'extension/bcsoapsearch/services/bcsoapsearch.ez.php' );
+include_once( 'extension/bcsoapsearch/services/bcsoapsearch.methods.php' );
 
 // static variable settings
 $searchStr = 'Cache';
