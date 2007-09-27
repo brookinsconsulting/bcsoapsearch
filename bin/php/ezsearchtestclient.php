@@ -1,11 +1,12 @@
 <?php
 
-include_once( 'extension/bcsoapsearch/services/bcsoapsearch.methods.php' );
+include_once( 'extension/bcsoapsearch/nusoap/bcsoapsearch.methods.php' );
 
-// static variable settings
+// variables
 $searchStr = 'Cache';
-
-$results = search( $searchStr );
+$searchLimit = 3;
+$searchOffset = 0;
+$results = search( $searchStr, $searchLimit, $searchOffset );
 print_r( $results );
 
 ?>

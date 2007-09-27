@@ -5,25 +5,27 @@ include_once( 'lib/ezutils/classes/ezcli.php' );
 include_once( 'kernel/classes/ezscript.php' );
 
 $cli =& eZCLI::instance();
-$script =& eZScript::instance( array( 'description' => 'HelloWorld SOAP client',
+$script =& eZScript::instance( array( 'description' => 'BCSoapSearchTest SOAP client',
                                       'use-session' => false,
                                       'use-modules' => false,
                                       'use-extensions' => true ) );
 
 $script->startup( );
 
-$options = $script->getOptions( '[show-request][show-response]', '[WSDL_URI][NAME]', array( 'show-request' => 'show the SOAP HTTP request', 'show-response' => 'show the SOAP HTTP response' ) );
+$options = $script->getOptions( '[show-request][show-response]', '[WSDL_URI][NAME][LIMIT][OFFSET]', array( 'show-request' => 'show the SOAP HTTP request', 'show-response' => 'show the SOAP HTTP response' ) );
 
 $script->initialize( );
 
 // check argument count
-if ( count( $options['arguments'] ) < 2 )
+if ( count( $options['arguments'] ) < 4 )
 {
     $script->shutdown( 1, 'wrong argument count' );
 }
 
 $wsdlUri =& $options['arguments'][0];
 $searchStr =& $options['arguments'][1];
+$searchLimit =& $options['arguments'][2];
+$searchOffset =& $options['arguments'][3];
 
 ext_class( 'nusoap', 'nusoap' );
 
@@ -36,7 +38,11 @@ if ( $err )
     $script->shutdown( 1, $err );
 }
 
-$result = $client->call( 'search_ez', array( 'searchStr' => $searchStr ) );
+$result = $client->call( 'search_ez', 
+			 array( 'searchStr' => $searchStr ),
+			 array( 'searchLimit' => $searchLimit ),
+			 array( 'searchOffset' => $searchOffset )
+		       );
 
 if ( $options['show-request'] )
 {
@@ -55,15 +61,13 @@ if ( $client->fault )
     $script->shutdown( 1, $result );
 }
 
-
 $err = $client->getError( );
 
 if ( $err )
 {
     $script->shutdown( 1, $err );
 }
-    
-
+   
 print_r( $result );
 // $cli->output( $result );
 
